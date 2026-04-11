@@ -1,0 +1,1 @@
+export { default } from "@urban-deals-shop/ui/postcss.config";
