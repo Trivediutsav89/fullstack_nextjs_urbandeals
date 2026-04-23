@@ -41,8 +41,26 @@ export function Hero({
                   Shop Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              
             </div>
+
+            <form
+              action="/search"
+              className="mt-6 flex flex-col gap-3 sm:flex-row items-stretch sm:items-center"
+            >
+              <label htmlFor="hero-search" className="sr-only">
+                Search products
+              </label>
+              <input
+                id="hero-search"
+                name="search"
+                type="search"
+                placeholder="Search products, categories or brands"
+                className="flex-1 rounded-full border border-muted px-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <Button type="submit" variant="outline" className="rounded-full px-6">
+                Search
+              </Button>
+            </form>
 
             <div className="mt-8 flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex -space-x-2">

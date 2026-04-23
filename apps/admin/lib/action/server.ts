@@ -39,6 +39,16 @@ export async function getOrdersNo() {
   cacheTag("orders");
   return db.order.count();
 }
+export async function getTotalRevenue() {
+  "use cache";
+  cacheTag("orders");
+  const result = await db.order.aggregate({
+    _sum: {
+      total_price: true,
+    },
+  });
+  return result._sum.total_price ?? 0;
+}
 export async function getOrders() {
   "use cache";
   cacheTag("orders");

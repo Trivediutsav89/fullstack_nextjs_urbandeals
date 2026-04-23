@@ -130,7 +130,11 @@ export async function sendMessage(
 export async function getSearchProducts(search: string) {
   const products = await db.product.findMany({
     where: {
-      OR: [{ name: { contains: search } }],
+      OR: [
+        { name: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { type: { contains: search, mode: "insensitive" } },
+      ],
     },
   });
   return products;

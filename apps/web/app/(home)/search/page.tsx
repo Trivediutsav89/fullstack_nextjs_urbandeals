@@ -1,29 +1,43 @@
+import Link from "next/link";
 import ProductsGrid from "@/components/products/products-grid";
-import { getProducts } from "@/lib/action/server";
+import { getSearchProducts } from "@/lib/action/action";
 import { redirect } from "next/navigation";
 
 export default async function page({
   searchParams,
 }: {
-  searchParams: Promise<{ search: string }>;
+  searchParams: {
+    search?: string;
+  };
 }) {
-  const search = (await searchParams).search;
-  if (!search || search == "" || search?.trim() == "") {
+  const search = searchParams.search?.trim() ?? "";
+  if (!search) {
     redirect("/products");
   }
-  let products = await getProducts();
-  products = products.filter(
-    (product) =>
-      product.type.startsWith(search) ||
-      product.description.toLocaleLowerCase().includes(search) ||
-      product.name.toLocaleLowerCase().includes(search)
-  );
+
+  const products = await getSearchProducts(search);
+
   return (
-    <div className=" flex justify-center items-center gap-5 pt-4 flex-col">
-      <h3 className=" text-2xl">
-        Search Results for <span className=" font-bold">{search}</span>
+    <div className="flex flex-col justify-center items-center gap-5 pt-4 px-4 sm:px-0">
+      <h3 className="text-2xl text-center">
+        Search results for <span className="font-bold">{search}</span>
       </h3>
-      <ProductsGrid products={products} />
+
+      {products.length === 0 ? (
+        <div className="space-y-4 text-center">
+          <p className="text-lg text-muted-foreground">
+            No products matched "{search}".
+          </p>
+          <Link
+            href="/products"
+            className="text-primary underline hover:text-primary/80"
+          >
+            Browse all products
+          </Link>
+        </div>
+      ) : (
+        <ProductsGrid products={products} />
+      )}
     </div>
   );
 }

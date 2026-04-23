@@ -5,15 +5,16 @@ import {
   getProductsNo,
 } from "@/lib/action/server";
 export default async function DashboardCards() {
-  const [noOfProducts, orders, pending] = await Promise.all([
+  const [noOfProducts, orders, pending, totalRevenue] = await Promise.all([
     getProductsNo(),
     getOrdersNo(),
     getPendingOrdersNo(),
+    getTotalRevenue(),
   ]);
 
   // const noOfCustomers = await getAllUsers();
   return (
-    <div className="grid gap-4 sm:grid-cols-1 justify-center items-center md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-1 justify-center items-center md:grid-cols-2 lg:grid-cols-4">
       <DashboardCard
         label="Products"
         content={noOfProducts}
@@ -36,6 +37,12 @@ export default async function DashboardCards() {
         content={pending}
         icon="money"
         color="bg-primary"
+      />
+      <DashboardCard
+        label="Revenue"
+        content={`${totalRevenue.toLocaleString()} Rwf`}
+        icon="money"
+        color="bg-green-400"
       />
     </div>
   );
